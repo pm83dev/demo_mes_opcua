@@ -1,832 +1,1949 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demo — Dashboard Produzione Industriale</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-:root {
-  --bg:      #0d0f12;
-  --bg2:     #13161c;
-  --panel:   #1a1e28;
-  --panel2:  #1f2433;
-  --border:  #252a38;
-  --orange:  #e8611a;
-  --orange2: #ff7c35;
-  --green:   #2ecc71;
-  --red:     #e74c3c;
-  --yellow:  #f39c12;
-  --blue:    #3498db;
-  --steel:   #afc4d8;
-  --muted:   #6b7a99;
-  --text:    #d8e4f0;
-  --white:   #f0f4f8;
-  --font-h:  'Barlow Condensed', sans-serif;
-  --font-b:  'Barlow', sans-serif;
-  --font-m:  'JetBrains Mono', monospace;
-  --radius:  10px;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { background: var(--bg); color: var(--text); font-family: var(--font-b); font-size: 15px; min-height: 100vh; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demo — Dashboard Produzione Industriale</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --bg: #0d0f12;
+        --bg2: #13161c;
+        --panel: #1a1e28;
+        --panel2: #1f2433;
+        --border: #252a38;
+        --orange: #e8611a;
+        --orange2: #ff7c35;
+        --green: #2ecc71;
+        --red: #e74c3c;
+        --yellow: #f39c12;
+        --blue: #3498db;
+        --steel: #afc4d8;
+        --muted: #6b7a99;
+        --text: #d8e4f0;
+        --white: #f0f4f8;
+        --font-h: "Barlow Condensed", sans-serif;
+        --font-b: "Barlow", sans-serif;
+        --font-m: "JetBrains Mono", monospace;
+        --radius: 10px;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-b);
+        font-size: 15px;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      body.menu-open {
+        overflow: hidden;
+      }
 
-/* DEMO BANNER */
-.demo-banner {
-  background: linear-gradient(90deg, var(--orange), var(--orange2));
-  text-align: center;
-  padding: 6px 1rem;
-  font-family: var(--font-m);
-  font-size: 0.75rem;
-  color: #fff;
-  letter-spacing: 0.08em;
-}
-.demo-banner a { color: #fff; font-weight: 700; }
+      /* DEMO BANNER */
+      .demo-banner {
+        background: linear-gradient(90deg, var(--orange), var(--orange2));
+        text-align: center;
+        padding: 6px 1rem;
+        font-family: var(--font-m);
+        font-size: 0.75rem;
+        color: #fff;
+        letter-spacing: 0.08em;
+      }
+      .demo-banner a {
+        color: #fff;
+        font-weight: 700;
+      }
 
-/* SIDEBAR */
-.layout { display: flex; min-height: calc(100vh - 30px); }
-.sidebar {
-  width: 220px; flex-shrink: 0;
-  background: var(--bg2);
-  border-right: 1px solid var(--border);
-  display: flex; flex-direction: column;
-  position: fixed; top: 30px; left: 0; bottom: 0;
-  z-index: 50;
-}
-.sidebar-logo {
-  padding: 1.25rem 1rem;
-  border-bottom: 1px solid var(--border);
-}
-.sidebar-logo .logo-title {
-  font-family: var(--font-h);
-  font-weight: 800; font-size: 1rem;
-  color: var(--white); letter-spacing: 0.04em;
-  line-height: 1.2;
-}
-.sidebar-logo .logo-sub {
-  font-family: var(--font-m);
-  font-size: 0.65rem; color: var(--orange);
-  letter-spacing: 0.1em; margin-top: 2px;
-}
-.sidebar-logo .live-dot {
-  display: inline-block; width: 7px; height: 7px;
-  background: var(--green); border-radius: 50%;
-  margin-right: 5px;
-  animation: blink 1.5s infinite;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+      /* SIDEBAR */
+      .layout {
+        display: flex;
+        min-height: calc(100vh - 30px);
+      }
+      .sidebar {
+        width: 220px;
+        flex-shrink: 0;
+        background: var(--bg2);
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 30px;
+        left: 0;
+        bottom: 0;
+        z-index: 50;
+      }
+      .sidebar-logo {
+        padding: 1.25rem 1rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .sidebar-logo .logo-title {
+        font-family: var(--font-h);
+        font-weight: 800;
+        font-size: 1rem;
+        color: var(--white);
+        letter-spacing: 0.04em;
+        line-height: 1.2;
+      }
+      .sidebar-logo .logo-sub {
+        font-family: var(--font-m);
+        font-size: 0.65rem;
+        color: var(--orange);
+        letter-spacing: 0.1em;
+        margin-top: 2px;
+      }
+      .sidebar-logo .live-dot {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        background: var(--green);
+        border-radius: 50%;
+        margin-right: 5px;
+        animation: blink 1.5s infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.2;
+        }
+      }
 
-.nav-section {
-  padding: 0.75rem 0.75rem 0.25rem;
-  font-family: var(--font-m);
-  font-size: 0.62rem; color: var(--muted);
-  letter-spacing: 0.15em; text-transform: uppercase;
-}
-.nav-item {
-  display: flex; align-items: center; gap: 0.6rem;
-  padding: 0.55rem 1rem;
-  color: var(--muted);
-  font-size: 0.88rem; font-weight: 500;
-  cursor: pointer; border-left: 3px solid transparent;
-  transition: all 0.15s;
-  text-decoration: none;
-}
-.nav-item:hover { color: var(--text); background: var(--panel); }
-.nav-item.active { color: var(--orange); border-left-color: var(--orange); background: rgba(232,97,26,0.08); }
-.nav-item i { width: 16px; text-align: center; font-size: 0.9rem; }
+      .nav-section {
+        padding: 0.75rem 0.75rem 0.25rem;
+        font-family: var(--font-m);
+        font-size: 0.62rem;
+        color: var(--muted);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.55rem 1rem;
+        color: var(--muted);
+        font-size: 0.88rem;
+        font-weight: 500;
+        cursor: pointer;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+        text-decoration: none;
+      }
+      .nav-item:hover {
+        color: var(--text);
+        background: var(--panel);
+      }
+      .nav-item.active {
+        color: var(--orange);
+        border-left-color: var(--orange);
+        background: rgba(232, 97, 26, 0.08);
+      }
+      .nav-item i {
+        width: 16px;
+        text-align: center;
+        font-size: 0.9rem;
+      }
 
-.sidebar-footer {
-  margin-top: auto;
-  padding: 1rem;
-  border-top: 1px solid var(--border);
-  font-family: var(--font-m);
-  font-size: 0.65rem; color: var(--muted);
-  text-align: center;
-}
-.sidebar-footer a { color: var(--orange); text-decoration: none; }
+      .sidebar-footer {
+        margin-top: auto;
+        padding: 1rem;
+        border-top: 1px solid var(--border);
+        font-family: var(--font-m);
+        font-size: 0.65rem;
+        color: var(--muted);
+        text-align: center;
+      }
+      .sidebar-footer a {
+        color: var(--orange);
+        text-decoration: none;
+      }
 
-/* MAIN */
-.main { margin-left: 220px; padding: 1.5rem; flex: 1; }
+      .mobile-menu-btn {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 46px;
+        height: 46px;
+        border: 1px solid rgba(232, 97, 26, 0.35);
+        border-radius: 50%;
+        background: linear-gradient(
+          180deg,
+          rgba(31, 36, 51, 0.96),
+          rgba(13, 15, 18, 0.96)
+        );
+        color: var(--white);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+        flex: 0 0 auto;
+      }
 
-/* PAGE */
-.page { display: none; }
-.page.active { display: block; }
+      .sidebar-overlay {
+        position: fixed;
+        inset: 30px 0 0;
+        background: rgba(0, 0, 0, 0.52);
+        backdrop-filter: blur(3px);
+        z-index: 40;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.2s ease,
+          visibility 0.2s ease;
+      }
 
-/* TOPBAR */
-.topbar {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border);
-}
-.topbar-title { font-family: var(--font-h); font-weight: 700; font-size: 1.6rem; color: var(--white); }
-.topbar-right { display: flex; align-items: center; gap: 0.75rem; }
-.timestamp { font-family: var(--font-m); font-size: 0.72rem; color: var(--muted); }
-.badge-live {
-  font-family: var(--font-m); font-size: 0.68rem;
-  background: rgba(46,204,113,0.15); color: var(--green);
-  border: 1px solid rgba(46,204,113,0.3);
-  padding: 3px 8px; border-radius: 20px;
-  display: flex; align-items: center; gap: 5px;
-}
+      .sidebar-overlay.open {
+        opacity: 1;
+        visibility: visible;
+      }
 
-/* SECTION CARD */
-.section-card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.25rem;
-  margin-bottom: 1.25rem;
-}
-.section-head {
-  display: flex; align-items: center; gap: 0.5rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--border);
-}
-.section-head h2 {
-  font-family: var(--font-h); font-weight: 700;
-  font-size: 1rem; color: var(--white);
-  letter-spacing: 0.04em; text-transform: uppercase;
-}
-.section-head i { font-size: 1rem; }
+      /* MAIN */
+      .main {
+        margin-left: 220px;
+        padding: 1.5rem;
+        flex: 1;
+      }
 
-/* GRID */
-.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
-.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
-.grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; }
-@media(max-width:1100px){ .grid-4{grid-template-columns:repeat(2,1fr);} }
-@media(max-width:700px){ .grid-4,.grid-3,.grid-2{grid-template-columns:1fr;} }
+      /* PAGE */
+      .page {
+        display: none;
+      }
+      .page.active {
+        display: block;
+      }
 
-/* KPI CARD */
-.kpi-card {
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 1rem;
-  display: flex; flex-direction: column;
-}
-.kpi-label { font-family: var(--font-m); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem; }
-.kpi-value { font-family: var(--font-h); font-weight: 800; font-size: 2rem; line-height: 1; margin-bottom: 0.25rem; }
-.kpi-unit { font-size: 0.75rem; color: var(--muted); }
-.kpi-update { font-family: var(--font-m); font-size: 0.62rem; color: var(--muted); margin-top: auto; padding-top: 0.5rem; border-top: 1px solid var(--border); }
-.kpi-card.orange .kpi-value { color: var(--orange); }
-.kpi-card.green .kpi-value { color: var(--green); }
-.kpi-card.blue .kpi-value { color: var(--blue); }
-.kpi-card.yellow .kpi-value { color: var(--yellow); }
-.kpi-card.red .kpi-value { color: var(--red); }
+      /* TOPBAR */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .topbar-title {
+        font-family: var(--font-h);
+        font-weight: 700;
+        font-size: 1.6rem;
+        color: var(--white);
+      }
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .timestamp {
+        font-family: var(--font-m);
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+      .badge-live {
+        font-family: var(--font-m);
+        font-size: 0.68rem;
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--green);
+        border: 1px solid rgba(46, 204, 113, 0.3);
+        padding: 3px 8px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
 
-/* MACHINE CARD */
-.machine-card {
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 1rem;
-  display: flex; flex-direction: column; align-items: center;
-  gap: 0.5rem; text-align: center;
-}
-.machine-name { font-family: var(--font-h); font-weight: 700; font-size: 1rem; color: var(--white); }
-.machine-icon { font-size: 2.5rem; }
-.machine-icon.running { color: var(--green); animation: spin 3s linear infinite; }
-.machine-icon.stopped { color: var(--red); }
-.machine-icon.standby { color: var(--yellow); animation: pulse2 2s ease-in-out infinite; }
-@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-@keyframes pulse2 { 0%,100%{opacity:1} 50%{opacity:0.4} }
-.machine-status {
-  font-family: var(--font-m); font-size: 0.72rem; font-weight: 600;
-  padding: 3px 10px; border-radius: 20px; letter-spacing: 0.05em;
-}
-.machine-status.running { background: rgba(46,204,113,0.15); color: var(--green); border: 1px solid rgba(46,204,113,0.3); }
-.machine-status.stopped { background: rgba(231,76,60,0.15); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
-.machine-status.standby { background: rgba(243,156,18,0.15); color: var(--yellow); border: 1px solid rgba(243,156,18,0.3); }
-.machine-emerg { font-size: 0.72rem; font-family: var(--font-m); }
-.machine-emerg.ok { color: var(--green); }
-.machine-emerg.alarm { color: var(--red); }
-.machine-update { font-family: var(--font-m); font-size: 0.62rem; color: var(--muted); margin-top: auto; }
+      /* SECTION CARD */
+      .section-card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.25rem;
+        margin-bottom: 1.25rem;
+      }
+      .section-head {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .section-head h2 {
+        font-family: var(--font-h);
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--white);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .section-head i {
+        font-size: 1rem;
+      }
 
-/* FERMO CARD */
-.fermo-card {
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: 8px; padding: 1rem;
-  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.4rem;
-}
-.fermo-name { font-family: var(--font-h); font-size: 0.9rem; color: var(--steel); font-weight: 600; }
-.fermo-stato { font-family: var(--font-m); font-size: 0.72rem; padding: 3px 10px; border-radius: 20px; }
-.fermo-stato.active { background: rgba(231,76,60,0.2); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
-.fermo-stato.inactive { background: rgba(46,204,113,0.1); color: var(--green); border: 1px solid rgba(46,204,113,0.2); }
+      /* GRID */
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      @media (max-width: 1100px) {
+        .grid-4 {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 700px) {
+        .grid-4,
+        .grid-3,
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+      }
 
-/* ORDINI */
-.order-card {
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: 8px; overflow: hidden;
-  display: flex; flex-direction: column;
-  transition: transform 0.2s, border-color 0.2s;
-}
-.order-card:hover { transform: translateY(-3px); border-color: var(--orange); }
-.order-header {
-  background: linear-gradient(90deg, #2d6a2d, #3d8a3d);
-  padding: 0.75rem 1rem; position: relative; overflow: hidden;
-}
-.order-header::after {
-  content: '\f15c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
-  position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%);
-  font-size: 2rem; opacity: 0.15; color: #fff;
-}
-.order-num-label { font-size: 0.7rem; color: rgba(255,255,255,0.7); }
-.order-num { font-family: var(--font-h); font-weight: 700; font-size: 1.2rem; color: #fff; }
-.order-body { padding: 1rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
-.order-row { display: flex; justify-content: space-between; align-items: center; }
-.order-row-label { font-size: 0.78rem; color: var(--muted); }
-.order-row-value { font-weight: 600; color: var(--white); font-size: 0.88rem; }
-.order-qty-box {
-  background: rgba(243,156,18,0.1);
-  border: 1px solid rgba(243,156,18,0.3);
-  border-radius: 6px; padding: 0.5rem 0.75rem;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.order-qty-num { font-family: var(--font-h); font-weight: 800; font-size: 1.8rem; color: var(--yellow); }
-.order-qty-um { font-family: var(--font-m); font-size: 0.7rem; background: var(--yellow); color: #000; padding: 2px 6px; border-radius: 4px; }
-.order-actions { display: flex; flex-direction: column; gap: 0.4rem; padding: 0 1rem 1rem; }
-.btn { display: flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.6rem 1rem; border-radius: 6px; border: none; cursor: pointer; font-family: var(--font-b); font-weight: 600; font-size: 0.85rem; transition: all 0.2s; }
-.btn-primary { background: #3498db; color: #fff; }
-.btn-primary:hover { background: #2980b9; }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-success { background: rgba(46,204,113,0.15); color: var(--green); border: 1px solid rgba(46,204,113,0.3); }
-.btn-success:hover { background: rgba(46,204,113,0.25); }
-.btn-danger { background: rgba(231,76,60,0.15); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
-.btn-danger:hover { background: rgba(231,76,60,0.25); }
-.btn-sm { padding: 0.35rem 0.65rem; font-size: 0.78rem; }
-.btn-row { display: flex; gap: 0.4rem; }
-.btn-row .btn { flex: 1; }
-.sending-indicator {
-  font-family: var(--font-m); font-size: 0.7rem;
-  color: var(--green); text-align: center; padding: 0.3rem;
-  display: none;
-}
-.sending-indicator.show { display: block; animation: blink 0.8s infinite; }
+      /* KPI CARD */
+      .kpi-card {
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+      }
+      .kpi-label {
+        font-family: var(--font-m);
+        font-size: 0.68rem;
+        color: var(--muted);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.4rem;
+      }
+      .kpi-value {
+        font-family: var(--font-h);
+        font-weight: 800;
+        font-size: 2rem;
+        line-height: 1;
+        margin-bottom: 0.25rem;
+      }
+      .kpi-unit {
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+      .kpi-update {
+        font-family: var(--font-m);
+        font-size: 0.62rem;
+        color: var(--muted);
+        margin-top: auto;
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--border);
+      }
+      .kpi-card.orange .kpi-value {
+        color: var(--orange);
+      }
+      .kpi-card.green .kpi-value {
+        color: var(--green);
+      }
+      .kpi-card.blue .kpi-value {
+        color: var(--blue);
+      }
+      .kpi-card.yellow .kpi-value {
+        color: var(--yellow);
+      }
+      .kpi-card.red .kpi-value {
+        color: var(--red);
+      }
 
-/* TOAST */
-.toast-container { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999; display: flex; flex-direction: column; gap: 0.5rem; }
-.toast {
-  background: var(--panel2); border: 1px solid var(--border);
-  border-left: 4px solid var(--green);
-  border-radius: 8px; padding: 0.75rem 1rem;
-  font-size: 0.85rem; color: var(--white);
-  min-width: 260px; max-width: 360px;
-  animation: slideIn 0.3s ease;
-  display: flex; align-items: center; gap: 0.5rem;
-}
-.toast.error { border-left-color: var(--red); }
-.toast.warn { border-left-color: var(--yellow); }
-@keyframes slideIn { from{transform:translateX(40px);opacity:0} to{transform:none;opacity:1} }
+      /* MACHINE CARD */
+      .machine-card {
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        text-align: center;
+      }
+      .machine-name {
+        font-family: var(--font-h);
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--white);
+      }
+      .machine-icon {
+        font-size: 2.5rem;
+      }
+      .machine-icon.running {
+        color: var(--green);
+        animation: spin 3s linear infinite;
+      }
+      .machine-icon.stopped {
+        color: var(--red);
+      }
+      .machine-icon.standby {
+        color: var(--yellow);
+        animation: pulse2 2s ease-in-out infinite;
+      }
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes pulse2 {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+      .machine-status {
+        font-family: var(--font-m);
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 20px;
+        letter-spacing: 0.05em;
+      }
+      .machine-status.running {
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--green);
+        border: 1px solid rgba(46, 204, 113, 0.3);
+      }
+      .machine-status.stopped {
+        background: rgba(231, 76, 60, 0.15);
+        color: var(--red);
+        border: 1px solid rgba(231, 76, 60, 0.3);
+      }
+      .machine-status.standby {
+        background: rgba(243, 156, 18, 0.15);
+        color: var(--yellow);
+        border: 1px solid rgba(243, 156, 18, 0.3);
+      }
+      .machine-emerg {
+        font-size: 0.72rem;
+        font-family: var(--font-m);
+      }
+      .machine-emerg.ok {
+        color: var(--green);
+      }
+      .machine-emerg.alarm {
+        color: var(--red);
+      }
+      .machine-update {
+        font-family: var(--font-m);
+        font-size: 0.62rem;
+        color: var(--muted);
+        margin-top: auto;
+      }
 
-/* MODAL */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-  z-index: 200; display: none; align-items: center; justify-content: center;
-}
-.modal-overlay.open { display: flex; }
-.modal-box {
-  background: var(--panel); border: 1px solid var(--border);
-  border-radius: 12px; width: 90%; max-width: 560px;
-  max-height: 85vh; overflow-y: auto;
-}
-.modal-header {
-  padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(90deg, #1a2a1a, var(--panel));
-}
-.modal-header h3 { font-family: var(--font-h); font-size: 1.2rem; color: var(--white); }
-.modal-close { background: none; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; }
-.modal-close:hover { color: var(--white); }
-.modal-body { padding: 1.25rem; }
-.detail-list { display: flex; flex-direction: column; gap: 0.5rem; }
-.detail-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem; background: var(--panel2); border-radius: 6px; }
-.detail-key { font-size: 0.82rem; color: var(--muted); }
-.detail-val { font-weight: 600; color: var(--white); font-size: 0.88rem; }
-.detail-desc { padding: 0.75rem; background: rgba(255,255,255,0.04); border-radius: 6px; font-size: 0.88rem; color: var(--steel); margin-top: 0.75rem; }
-.modal-footer { padding: 1rem 1.25rem; border-top: 1px solid var(--border); display: flex; gap: 0.5rem; justify-content: flex-end; }
+      /* FERMO CARD */
+      .fermo-card {
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.4rem;
+      }
+      .fermo-name {
+        font-family: var(--font-h);
+        font-size: 0.9rem;
+        color: var(--steel);
+        font-weight: 600;
+      }
+      .fermo-stato {
+        font-family: var(--font-m);
+        font-size: 0.72rem;
+        padding: 3px 10px;
+        border-radius: 20px;
+      }
+      .fermo-stato.active {
+        background: rgba(231, 76, 60, 0.2);
+        color: var(--red);
+        border: 1px solid rgba(231, 76, 60, 0.3);
+      }
+      .fermo-stato.inactive {
+        background: rgba(46, 204, 113, 0.1);
+        color: var(--green);
+        border: 1px solid rgba(46, 204, 113, 0.2);
+      }
 
-/* REPORT */
-.stat-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-bottom: 1.25rem; }
-.stat-card { border-radius: 8px; padding: 1rem; text-align: center; }
-.stat-card.danger { background: rgba(231,76,60,0.15); border: 1px solid rgba(231,76,60,0.3); }
-.stat-card.warn { background: rgba(243,156,18,0.12); border: 1px solid rgba(243,156,18,0.3); }
-.stat-card.info { background: rgba(52,152,219,0.12); border: 1px solid rgba(52,152,219,0.3); }
-.stat-card h6 { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.4rem; }
-.stat-card .stat-num { font-family: var(--font-h); font-size: 2.2rem; font-weight: 800; line-height: 1; }
-.stat-card.danger .stat-num { color: var(--red); }
-.stat-card.warn .stat-num { color: var(--yellow); }
-.stat-card.info .stat-num { color: var(--blue); }
-.stat-card small { font-size: 0.72rem; color: var(--muted); }
+      /* ORDINI */
+      .order-card {
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition:
+          transform 0.2s,
+          border-color 0.2s;
+      }
+      .order-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--orange);
+      }
+      .order-header {
+        background: linear-gradient(90deg, #2d6a2d, #3d8a3d);
+        padding: 0.75rem 1rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .order-header::after {
+        content: "\f15c";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2rem;
+        opacity: 0.15;
+        color: #fff;
+      }
+      .order-num-label {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .order-num {
+        font-family: var(--font-h);
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #fff;
+      }
+      .order-body {
+        padding: 1rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .order-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .order-row-label {
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+      .order-row-value {
+        font-weight: 600;
+        color: var(--white);
+        font-size: 0.88rem;
+      }
+      .order-qty-box {
+        background: rgba(243, 156, 18, 0.1);
+        border: 1px solid rgba(243, 156, 18, 0.3);
+        border-radius: 6px;
+        padding: 0.5rem 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .order-qty-num {
+        font-family: var(--font-h);
+        font-weight: 800;
+        font-size: 1.8rem;
+        color: var(--yellow);
+      }
+      .order-qty-um {
+        font-family: var(--font-m);
+        font-size: 0.7rem;
+        background: var(--yellow);
+        color: #000;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      .order-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        padding: 0 1rem 1rem;
+      }
+      .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        padding: 0.6rem 1rem;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-family: var(--font-b);
+        font-weight: 600;
+        font-size: 0.85rem;
+        transition: all 0.2s;
+      }
+      .btn-primary {
+        background: #3498db;
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: #2980b9;
+      }
+      .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .btn-success {
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--green);
+        border: 1px solid rgba(46, 204, 113, 0.3);
+      }
+      .btn-success:hover {
+        background: rgba(46, 204, 113, 0.25);
+      }
+      .btn-danger {
+        background: rgba(231, 76, 60, 0.15);
+        color: var(--red);
+        border: 1px solid rgba(231, 76, 60, 0.3);
+      }
+      .btn-danger:hover {
+        background: rgba(231, 76, 60, 0.25);
+      }
+      .btn-sm {
+        padding: 0.35rem 0.65rem;
+        font-size: 0.78rem;
+      }
+      .btn-row {
+        display: flex;
+        gap: 0.4rem;
+      }
+      .btn-row .btn {
+        flex: 1;
+      }
+      .sending-indicator {
+        font-family: var(--font-m);
+        font-size: 0.7rem;
+        color: var(--green);
+        text-align: center;
+        padding: 0.3rem;
+        display: none;
+      }
+      .sending-indicator.show {
+        display: block;
+        animation: blink 0.8s infinite;
+      }
 
-.filters-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: flex-end; margin-bottom: 1.25rem; }
-.filter-group { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; min-width: 140px; }
-.filter-label { font-family: var(--font-m); font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
-.filter-input, .filter-select {
-  background: var(--panel2); border: 1px solid var(--border);
-  border-radius: 6px; padding: 0.45rem 0.65rem;
-  color: var(--text); font-family: var(--font-b); font-size: 0.85rem;
-  outline: none; transition: border-color 0.2s;
-}
-.filter-input:focus, .filter-select:focus { border-color: var(--orange); }
-.filter-select option { background: var(--panel); }
+      /* TOAST */
+      .toast-container {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .toast {
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--green);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+        color: var(--white);
+        min-width: 260px;
+        max-width: 360px;
+        animation: slideIn 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .toast.error {
+        border-left-color: var(--red);
+      }
+      .toast.warn {
+        border-left-color: var(--yellow);
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateX(40px);
+          opacity: 0;
+        }
+        to {
+          transform: none;
+          opacity: 1;
+        }
+      }
 
-/* TABLE */
-.table-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-thead th {
-  background: var(--panel2); color: var(--muted);
-  font-family: var(--font-m); font-size: 0.68rem; letter-spacing: 0.08em;
-  text-transform: uppercase; padding: 0.65rem 0.75rem;
-  border-bottom: 1px solid var(--border); white-space: nowrap;
-  cursor: pointer; user-select: none;
-}
-thead th:hover { color: var(--text); }
-tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; cursor: pointer; }
-tbody tr:hover { background: rgba(255,255,255,0.03); }
-tbody td { padding: 0.6rem 0.75rem; color: var(--steel); vertical-align: middle; }
-.expand-row { background: rgba(46,204,113,0.05) !important; }
-.expand-row td { padding: 1rem; }
-.badge-type {
-  font-family: var(--font-m); font-size: 0.65rem;
-  padding: 3px 8px; border-radius: 4px; font-weight: 600;
-}
-.badge-type.prod { background: rgba(46,204,113,0.15); color: var(--green); }
-.badge-type.stop { background: rgba(231,76,60,0.15); color: var(--red); }
-.badge-type.maint { background: rgba(243,156,18,0.15); color: var(--yellow); }
-.badge-type.other { background: rgba(52,152,219,0.15); color: var(--blue); }
-.badge-stato { font-family: var(--font-m); font-size: 0.65rem; padding: 3px 8px; border-radius: 4px; }
-.badge-stato.done { background: rgba(46,204,113,0.15); color: var(--green); }
-.badge-stato.open { background: rgba(243,156,18,0.15); color: var(--yellow); }
-.progress-bar-wrap { background: var(--panel2); border-radius: 4px; height: 12px; min-width: 80px; overflow: hidden; }
-.progress-bar-fill { height: 100%; background: var(--red); border-radius: 4px; transition: width 0.4s; }
+      /* MODAL */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 200;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-overlay.open {
+        display: flex;
+      }
+      .modal-box {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        width: 90%;
+        max-width: 560px;
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+      .modal-header {
+        padding: 1rem 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(90deg, #1a2a1a, var(--panel));
+      }
+      .modal-header h3 {
+        font-family: var(--font-h);
+        font-size: 1.2rem;
+        color: var(--white);
+      }
+      .modal-close {
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+      .modal-close:hover {
+        color: var(--white);
+      }
+      .modal-body {
+        padding: 1.25rem;
+      }
+      .detail-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0.75rem;
+        background: var(--panel2);
+        border-radius: 6px;
+      }
+      .detail-key {
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+      .detail-val {
+        font-weight: 600;
+        color: var(--white);
+        font-size: 0.88rem;
+      }
+      .detail-desc {
+        padding: 0.75rem;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 6px;
+        font-size: 0.88rem;
+        color: var(--steel);
+        margin-top: 0.75rem;
+      }
+      .modal-footer {
+        padding: 1rem 1.25rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+      }
 
-/* PAGINATION */
-.pagination { display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; }
-.pagination-info { font-family: var(--font-m); font-size: 0.7rem; color: var(--muted); }
-.page-btns { display: flex; gap: 0.25rem; }
-.page-btn {
-  background: var(--panel2); border: 1px solid var(--border);
-  color: var(--muted); padding: 0.3rem 0.65rem; border-radius: 4px;
-  cursor: pointer; font-size: 0.82rem; transition: all 0.15s;
-}
-.page-btn:hover { border-color: var(--orange); color: var(--orange); }
-.page-btn.active { background: var(--orange); border-color: var(--orange); color: #fff; }
-.page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+      /* REPORT */
+      .stat-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+      }
+      .stat-card {
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+      }
+      .stat-card.danger {
+        background: rgba(231, 76, 60, 0.15);
+        border: 1px solid rgba(231, 76, 60, 0.3);
+      }
+      .stat-card.warn {
+        background: rgba(243, 156, 18, 0.12);
+        border: 1px solid rgba(243, 156, 18, 0.3);
+      }
+      .stat-card.info {
+        background: rgba(52, 152, 219, 0.12);
+        border: 1px solid rgba(52, 152, 219, 0.3);
+      }
+      .stat-card h6 {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-bottom: 0.4rem;
+      }
+      .stat-card .stat-num {
+        font-family: var(--font-h);
+        font-size: 2.2rem;
+        font-weight: 800;
+        line-height: 1;
+      }
+      .stat-card.danger .stat-num {
+        color: var(--red);
+      }
+      .stat-card.warn .stat-num {
+        color: var(--yellow);
+      }
+      .stat-card.info .stat-num {
+        color: var(--blue);
+      }
+      .stat-card small {
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
 
-/* SCROLLBAR */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg2); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-</style>
-</head>
-<body>
+      .filters-row {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        margin-bottom: 1.25rem;
+      }
+      .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        flex: 1;
+        min-width: 140px;
+      }
+      .filter-label {
+        font-family: var(--font-m);
+        font-size: 0.65rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .filter-input,
+      .filter-select {
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 0.45rem 0.65rem;
+        color: var(--text);
+        font-family: var(--font-b);
+        font-size: 0.85rem;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .filter-input:focus,
+      .filter-select:focus {
+        border-color: var(--orange);
+      }
+      .filter-select option {
+        background: var(--panel);
+      }
 
-<div class="demo-banner">
-  ⚡ DEMO — Dati simulati a scopo dimostrativo &nbsp;|&nbsp;
-  Sviluppato da <a href="https://pm-softwareautomation.com" target="_blank">Paolo Miccoli</a> — Industrial Software Developer
-</div>
+      /* TABLE */
+      .table-wrap {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+      }
+      thead th {
+        background: var(--panel2);
+        color: var(--muted);
+        font-family: var(--font-m);
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.65rem 0.75rem;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+        cursor: pointer;
+        user-select: none;
+      }
+      thead th:hover {
+        color: var(--text);
+      }
+      tbody tr {
+        border-bottom: 1px solid var(--border);
+        transition: background 0.15s;
+        cursor: pointer;
+      }
+      tbody tr:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      tbody td {
+        padding: 0.6rem 0.75rem;
+        color: var(--steel);
+        vertical-align: middle;
+      }
+      .expand-row {
+        background: rgba(46, 204, 113, 0.05) !important;
+      }
+      .expand-row td {
+        padding: 1rem;
+      }
+      .badge-type {
+        font-family: var(--font-m);
+        font-size: 0.65rem;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-weight: 600;
+      }
+      .badge-type.prod {
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--green);
+      }
+      .badge-type.stop {
+        background: rgba(231, 76, 60, 0.15);
+        color: var(--red);
+      }
+      .badge-type.maint {
+        background: rgba(243, 156, 18, 0.15);
+        color: var(--yellow);
+      }
+      .badge-type.other {
+        background: rgba(52, 152, 219, 0.15);
+        color: var(--blue);
+      }
+      .badge-stato {
+        font-family: var(--font-m);
+        font-size: 0.65rem;
+        padding: 3px 8px;
+        border-radius: 4px;
+      }
+      .badge-stato.done {
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--green);
+      }
+      .badge-stato.open {
+        background: rgba(243, 156, 18, 0.15);
+        color: var(--yellow);
+      }
+      .progress-bar-wrap {
+        background: var(--panel2);
+        border-radius: 4px;
+        height: 12px;
+        min-width: 80px;
+        overflow: hidden;
+      }
+      .progress-bar-fill {
+        height: 100%;
+        background: var(--red);
+        border-radius: 4px;
+        transition: width 0.4s;
+      }
 
-<div class="layout">
+      /* PAGINATION */
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1rem;
+      }
+      .pagination-info {
+        font-family: var(--font-m);
+        font-size: 0.7rem;
+        color: var(--muted);
+      }
+      .page-btns {
+        display: flex;
+        gap: 0.25rem;
+      }
+      .page-btn {
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        padding: 0.3rem 0.65rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.82rem;
+        transition: all 0.15s;
+      }
+      .page-btn:hover {
+        border-color: var(--orange);
+        color: var(--orange);
+      }
+      .page-btn.active {
+        background: var(--orange);
+        border-color: var(--orange);
+        color: #fff;
+      }
+      .page-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
 
-<!-- SIDEBAR -->
-<nav class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-title">Dashboard<br>Produzione</div>
-    <div class="logo-sub"><span class="live-dot"></span>SISTEMA ATTIVO</div>
-  </div>
-  <div class="nav-section">Monitoraggio</div>
-  <a class="nav-item active" onclick="showPage('dashboard',this)">
-    <i class="fas fa-tachometer-alt"></i> Dashboard
-  </a>
-  <a class="nav-item" onclick="showPage('ordini',this)">
-    <i class="fas fa-clipboard-list"></i> Ordini
-  </a>
-  <a class="nav-item" onclick="showPage('report',this)">
-    <i class="fas fa-chart-bar"></i> Report Eventi
-  </a>
-  <div class="sidebar-footer">
-    <a href="https://pm-softwareautomation.com" target="_blank">pm-softwareautomation.com</a>
-  </div>
-</nav>
+      @media (max-width: 1024px) {
+        .main {
+          padding: 1.1rem;
+        }
+        .topbar {
+          gap: 0.9rem;
+          align-items: flex-start;
+        }
+        .topbar-title {
+          font-size: 1.35rem;
+        }
+        .topbar-right {
+          flex-wrap: wrap;
+          justify-content: flex-end;
+        }
+        .section-card {
+          padding: 1rem;
+        }
+        .stat-cards {
+          grid-template-columns: 1fr;
+        }
+      }
 
-<!-- MAIN -->
-<main class="main">
+      @media (max-width: 860px) {
+        .layout {
+          min-height: auto;
+        }
+        .mobile-menu-btn {
+          display: inline-flex;
+        }
+        .sidebar {
+          top: 30px;
+          bottom: 0;
+          transform: translateX(-100%);
+          transition: transform 0.25s ease;
+          box-shadow: 18px 0 40px rgba(0, 0, 0, 0.35);
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+        .main {
+          margin-left: 0;
+          width: 100%;
+          padding: 1rem;
+          padding-top: 1.25rem;
+        }
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .topbar-left {
+          width: 100%;
+        }
+        .topbar-right {
+          width: 100%;
+          justify-content: space-between;
+        }
+        .order-row,
+        .detail-row,
+        .pagination,
+        .modal-footer {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .order-qty-box,
+        .btn-row,
+        .page-btns {
+          flex-wrap: wrap;
+        }
+        .order-qty-box {
+          gap: 0.75rem;
+        }
+        .table-wrap {
+          margin: 0 -0.2rem;
+        }
+        .toast-container {
+          left: 1rem;
+          right: 1rem;
+          bottom: 1rem;
+        }
+        .toast {
+          min-width: 0;
+          max-width: none;
+        }
+      }
 
-<!-- ═══ PAGE: DASHBOARD ═══ -->
-<div id="page-dashboard" class="page active">
-  <div class="topbar">
-    <div class="topbar-title"><i class="fas fa-tachometer-alt" style="color:var(--orange);margin-right:.5rem"></i>Dashboard Produzione</div>
-    <div class="topbar-right">
-      <span class="badge-live"><span class="live-dot" style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block;animation:blink 1.5s infinite"></span>Live</span>
-      <span class="timestamp" id="clock">--:--:--</span>
+      @media (max-width: 640px) {
+        .demo-banner {
+          line-height: 1.45;
+        }
+        .mobile-menu-btn {
+          width: 42px;
+          height: 42px;
+        }
+        .main {
+          padding: 0.85rem;
+        }
+        .topbar {
+          margin-bottom: 1rem;
+          padding-bottom: 0.85rem;
+        }
+        .topbar-title {
+          font-size: 1.15rem;
+          line-height: 1.1;
+        }
+        .topbar-right {
+          gap: 0.5rem;
+        }
+        .section-card {
+          padding: 0.85rem;
+          margin-bottom: 1rem;
+        }
+        .section-head {
+          align-items: flex-start;
+        }
+        .section-head h2 {
+          font-size: 0.92rem;
+        }
+        .kpi-value {
+          font-size: 1.6rem;
+        }
+        .order-qty-num {
+          font-size: 1.45rem;
+        }
+        .modal-box {
+          width: calc(100% - 1rem);
+          max-height: calc(100vh - 1.5rem);
+        }
+        .modal-header,
+        .modal-body,
+        .modal-footer {
+          padding-left: 0.9rem;
+          padding-right: 0.9rem;
+        }
+        tbody td,
+        thead th {
+          padding: 0.55rem 0.5rem;
+        }
+        .filter-group {
+          min-width: 100%;
+        }
+      }
+
+      /* SCROLLBAR */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg2);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo-banner">
+      ⚡ DEMO — Dati simulati a scopo dimostrativo &nbsp;|&nbsp; Sviluppato da
+      <a href="https://pm-softwareautomation.com" target="_blank"
+        >Paolo Miccoli</a
+      >
+      — Industrial Software Developer
     </div>
-  </div>
 
-  <!-- RICETTA -->
-  <div class="section-card">
-    <div class="section-head">
-      <i class="fas fa-file-alt" style="color:var(--green)"></i>
-      <h2>Dati Ricetta</h2>
+    <div
+      class="sidebar-overlay"
+      id="sidebar-overlay"
+      onclick="closeSidebar()"
+    ></div>
+
+    <div class="layout">
+      <!-- SIDEBAR -->
+      <nav class="sidebar">
+        <div class="sidebar-logo">
+          <div class="logo-title">Dashboard<br />Produzione</div>
+          <div class="logo-sub">
+            <span class="live-dot"></span>SISTEMA ATTIVO
+          </div>
+        </div>
+        <div class="nav-section">Monitoraggio</div>
+        <a class="nav-item active" onclick="showPage('dashboard', this)">
+          <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+        <a class="nav-item" onclick="showPage('ordini', this)">
+          <i class="fas fa-clipboard-list"></i> Ordini
+        </a>
+        <a class="nav-item" onclick="showPage('report', this)">
+          <i class="fas fa-chart-bar"></i> Report Eventi
+        </a>
+        <div class="sidebar-footer">
+          <a href="https://pm-softwareautomation.com" target="_blank"
+            >pm-softwareautomation.com</a
+          >
+        </div>
+      </nav>
+
+      <!-- MAIN -->
+      <main class="main">
+        <!-- ═══ PAGE: DASHBOARD ═══ -->
+        <div id="page-dashboard" class="page active">
+          <div class="topbar">
+            <div class="topbar-left">
+              <button
+                class="mobile-menu-btn"
+                type="button"
+                aria-label="Apri menu"
+                aria-expanded="false"
+                onclick="toggleSidebar()"
+              >
+                <i class="fas fa-bars"></i>
+              </button>
+              <div class="topbar-title">
+                <i
+                  class="fas fa-tachometer-alt"
+                  style="color: var(--orange); margin-right: 0.5rem"
+                ></i
+                >Dashboard Produzione
+              </div>
+            </div>
+            <div class="topbar-right">
+              <span class="badge-live"
+                ><span
+                  class="live-dot"
+                  style="
+                    width: 6px;
+                    height: 6px;
+                    background: var(--green);
+                    border-radius: 50%;
+                    display: inline-block;
+                    animation: blink 1.5s infinite;
+                  "
+                ></span
+                >Live</span
+              >
+              <span class="timestamp" id="clock">--:--:--</span>
+            </div>
+          </div>
+
+          <!-- RICETTA -->
+          <div class="section-card">
+            <div class="section-head">
+              <i class="fas fa-file-alt" style="color: var(--green)"></i>
+              <h2>Dati Ricetta</h2>
+            </div>
+            <div class="grid-4" id="ricetta-grid"></div>
+          </div>
+
+          <!-- KPI -->
+          <div class="section-card">
+            <div class="section-head">
+              <i class="fas fa-tachometer-alt" style="color: var(--orange)"></i>
+              <h2>Indicatori di Produzione</h2>
+            </div>
+            <div class="grid-4" id="kpi-grid"></div>
+          </div>
+
+          <!-- STATO LINEA -->
+          <div class="section-card">
+            <div class="section-head">
+              <i class="fas fa-cogs" style="color: var(--blue)"></i>
+              <h2>Stato Linea</h2>
+            </div>
+            <div class="grid-4" id="macchine-grid"></div>
+          </div>
+
+          <!-- CONSUMI -->
+          <div class="section-card">
+            <div class="section-head">
+              <i class="fas fa-bolt" style="color: var(--yellow)"></i>
+              <h2>Consumi e Ambiente</h2>
+            </div>
+            <div class="grid-4" id="consumi-grid"></div>
+          </div>
+
+          <!-- FERMI -->
+          <div class="section-card">
+            <div class="section-head">
+              <i
+                class="fas fa-exclamation-octagon"
+                style="color: var(--red)"
+              ></i>
+              <h2>Stato Fermi</h2>
+            </div>
+            <div class="grid-4" id="fermi-grid"></div>
+          </div>
+        </div>
+
+        <!-- ═══ PAGE: ORDINI ═══ -->
+        <div id="page-ordini" class="page">
+          <div class="topbar">
+            <div class="topbar-left">
+              <button
+                class="mobile-menu-btn"
+                type="button"
+                aria-label="Apri menu"
+                aria-expanded="false"
+                onclick="toggleSidebar()"
+              >
+                <i class="fas fa-bars"></i>
+              </button>
+              <div class="topbar-title">
+                <i
+                  class="fas fa-clipboard-list"
+                  style="color: var(--orange); margin-right: 0.5rem"
+                ></i
+                >Gestione Ordini
+              </div>
+            </div>
+            <div class="topbar-right">
+              <span class="timestamp" id="clock2">--:--:--</span>
+            </div>
+          </div>
+          <div class="section-card">
+            <div class="grid-4" id="ordini-grid"></div>
+          </div>
+        </div>
+
+        <!-- ═══ PAGE: REPORT ═══ -->
+        <div id="page-report" class="page">
+          <div class="topbar">
+            <div class="topbar-left">
+              <button
+                class="mobile-menu-btn"
+                type="button"
+                aria-label="Apri menu"
+                aria-expanded="false"
+                onclick="toggleSidebar()"
+              >
+                <i class="fas fa-bars"></i>
+              </button>
+              <div class="topbar-title">
+                <i
+                  class="fas fa-chart-bar"
+                  style="color: var(--orange); margin-right: 0.5rem"
+                ></i
+                >Report Eventi
+              </div>
+            </div>
+          </div>
+
+          <!-- STAT CARDS -->
+          <div class="stat-cards" id="stat-cards"></div>
+
+          <!-- SUMMARY TABLE -->
+          <div class="section-card">
+            <div class="section-head">
+              <i class="fas fa-table" style="color: var(--orange)"></i>
+              <h2>Statistiche Fermi — Ultimo Mese</h2>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Tipo Fermo</th>
+                    <th>Durata Totale</th>
+                    <th>Occorrenze</th>
+                    <th>% Totale</th>
+                    <th style="min-width: 120px">Grafico</th>
+                  </tr>
+                </thead>
+                <tbody id="stats-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- FILTERS -->
+          <div class="section-card">
+            <div class="section-head">
+              <i class="fas fa-filter" style="color: var(--muted)"></i>
+              <h2>Filtri di Ricerca</h2>
+            </div>
+            <div class="filters-row">
+              <div class="filter-group">
+                <label class="filter-label">Tipo Evento</label>
+                <select class="filter-select" id="f-type">
+                  <option value="">Tutti</option>
+                  <option>PRODUZIONE</option>
+                  <option>PAUSA</option>
+                  <option>AVVIAMENTO</option>
+                  <option>CAMBIO_STAMPO</option>
+                  <option>CAMBIO_PROFUMO</option>
+                  <option>PULIZIA_LINEA</option>
+                  <option>GUASTO_MACCHINA</option>
+                  <option>FERMO_MATERIE_PRIME</option>
+                  <option>FERMO_ALTRO</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Articolo</label>
+                <input
+                  class="filter-input"
+                  id="f-art"
+                  placeholder="Codice articolo"
+                />
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Data Inizio</label>
+                <input type="date" class="filter-input" id="f-start" />
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Data Fine</label>
+                <input type="date" class="filter-input" id="f-end" />
+              </div>
+              <div class="filter-group" style="flex: 0">
+                <label class="filter-label">&nbsp;</label>
+                <div style="display: flex; gap: 0.5rem">
+                  <button
+                    class="btn btn-primary btn-sm"
+                    onclick="applyFilters()"
+                  >
+                    <i class="fas fa-search"></i> Cerca
+                  </button>
+                  <button
+                    class="btn"
+                    style="
+                      background: var(--panel2);
+                      color: var(--muted);
+                      border: 1px solid var(--border);
+                    "
+                    onclick="resetFilters()"
+                  >
+                    <i class="fas fa-times"></i> Reset
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- EVENTS TABLE -->
+          <div class="section-card">
+            <div class="section-head">
+              <i class="fas fa-list" style="color: var(--blue)"></i>
+              <h2>
+                Registro Eventi
+                <span
+                  id="event-count"
+                  style="
+                    font-size: 0.8rem;
+                    color: var(--muted);
+                    font-family: var(--font-m);
+                  "
+                ></span>
+              </h2>
+              <div style="margin-left: auto">
+                <button
+                  class="btn btn-sm"
+                  style="
+                    background: rgba(46, 204, 113, 0.15);
+                    color: var(--green);
+                    border: 1px solid rgba(46, 204, 113, 0.3);
+                  "
+                  onclick="exportCSV()"
+                >
+                  <i class="fas fa-file-csv"></i> Esporta CSV
+                </button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width: 32px"></th>
+                    <th onclick="sortEvents('type')">
+                      Tipo Evento
+                      <i class="fas fa-sort" style="font-size: 0.6rem"></i>
+                    </th>
+                    <th onclick="sortEvents('start')">
+                      Inizio
+                      <i class="fas fa-sort" style="font-size: 0.6rem"></i>
+                    </th>
+                    <th>Fine</th>
+                    <th onclick="sortEvents('dur')">
+                      Durata
+                      <i class="fas fa-sort" style="font-size: 0.6rem"></i>
+                    </th>
+                    <th>Articolo</th>
+                    <th>Ordine</th>
+                    <th>Stato</th>
+                  </tr>
+                </thead>
+                <tbody id="events-tbody"></tbody>
+              </table>
+            </div>
+            <div class="pagination" id="pagination"></div>
+          </div>
+        </div>
+      </main>
     </div>
-    <div class="grid-4" id="ricetta-grid"></div>
-  </div>
 
-  <!-- KPI -->
-  <div class="section-card">
-    <div class="section-head">
-      <i class="fas fa-tachometer-alt" style="color:var(--orange)"></i>
-      <h2>Indicatori di Produzione</h2>
-    </div>
-    <div class="grid-4" id="kpi-grid"></div>
-  </div>
-
-  <!-- STATO LINEA -->
-  <div class="section-card">
-    <div class="section-head">
-      <i class="fas fa-cogs" style="color:var(--blue)"></i>
-      <h2>Stato Linea</h2>
-    </div>
-    <div class="grid-4" id="macchine-grid"></div>
-  </div>
-
-  <!-- CONSUMI -->
-  <div class="section-card">
-    <div class="section-head">
-      <i class="fas fa-bolt" style="color:var(--yellow)"></i>
-      <h2>Consumi e Ambiente</h2>
-    </div>
-    <div class="grid-4" id="consumi-grid"></div>
-  </div>
-
-  <!-- FERMI -->
-  <div class="section-card">
-    <div class="section-head">
-      <i class="fas fa-exclamation-octagon" style="color:var(--red)"></i>
-      <h2>Stato Fermi</h2>
-    </div>
-    <div class="grid-4" id="fermi-grid"></div>
-  </div>
-</div>
-
-<!-- ═══ PAGE: ORDINI ═══ -->
-<div id="page-ordini" class="page">
-  <div class="topbar">
-    <div class="topbar-title"><i class="fas fa-clipboard-list" style="color:var(--orange);margin-right:.5rem"></i>Gestione Ordini</div>
-    <div class="topbar-right">
-      <span class="timestamp" id="clock2">--:--:--</span>
-    </div>
-  </div>
-  <div class="section-card">
-    <div class="grid-4" id="ordini-grid"></div>
-  </div>
-</div>
-
-<!-- ═══ PAGE: REPORT ═══ -->
-<div id="page-report" class="page">
-  <div class="topbar">
-    <div class="topbar-title"><i class="fas fa-chart-bar" style="color:var(--orange);margin-right:.5rem"></i>Report Eventi</div>
-  </div>
-
-  <!-- STAT CARDS -->
-  <div class="stat-cards" id="stat-cards"></div>
-
-  <!-- SUMMARY TABLE -->
-  <div class="section-card">
-    <div class="section-head">
-      <i class="fas fa-table" style="color:var(--orange)"></i>
-      <h2>Statistiche Fermi — Ultimo Mese</h2>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th>#</th><th>Tipo Fermo</th><th>Durata Totale</th><th>Occorrenze</th><th>% Totale</th><th style="min-width:120px">Grafico</th>
-        </tr></thead>
-        <tbody id="stats-tbody"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- FILTERS -->
-  <div class="section-card">
-    <div class="section-head"><i class="fas fa-filter" style="color:var(--muted)"></i><h2>Filtri di Ricerca</h2></div>
-    <div class="filters-row">
-      <div class="filter-group">
-        <label class="filter-label">Tipo Evento</label>
-        <select class="filter-select" id="f-type">
-          <option value="">Tutti</option>
-          <option>PRODUZIONE</option><option>PAUSA</option><option>AVVIAMENTO</option>
-          <option>CAMBIO_STAMPO</option><option>CAMBIO_PROFUMO</option><option>PULIZIA_LINEA</option>
-          <option>GUASTO_MACCHINA</option><option>FERMO_MATERIE_PRIME</option><option>FERMO_ALTRO</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label class="filter-label">Articolo</label>
-        <input class="filter-input" id="f-art" placeholder="Codice articolo">
-      </div>
-      <div class="filter-group">
-        <label class="filter-label">Data Inizio</label>
-        <input type="date" class="filter-input" id="f-start">
-      </div>
-      <div class="filter-group">
-        <label class="filter-label">Data Fine</label>
-        <input type="date" class="filter-input" id="f-end">
-      </div>
-      <div class="filter-group" style="flex:0">
-        <label class="filter-label">&nbsp;</label>
-        <div style="display:flex;gap:.5rem">
-          <button class="btn btn-primary btn-sm" onclick="applyFilters()"><i class="fas fa-search"></i> Cerca</button>
-          <button class="btn" style="background:var(--panel2);color:var(--muted);border:1px solid var(--border)" onclick="resetFilters()"><i class="fas fa-times"></i> Reset</button>
+    <!-- MODAL ORDINE -->
+    <div class="modal-overlay" id="modal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>
+            Dettagli Ordine:
+            <span id="modal-num" style="color: var(--orange)"></span>
+          </h3>
+          <button class="modal-close" onclick="closeModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="detail-list" id="modal-body"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" id="modal-send-btn">
+            <i class="fas fa-arrow-right-circle"></i> Invia a Impianto
+          </button>
+          <button
+            class="btn"
+            style="
+              background: var(--panel2);
+              color: var(--muted);
+              border: 1px solid var(--border);
+            "
+            onclick="closeModal()"
+          >
+            Chiudi
+          </button>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- EVENTS TABLE -->
-  <div class="section-card">
-    <div class="section-head">
-      <i class="fas fa-list" style="color:var(--blue)"></i>
-      <h2>Registro Eventi <span id="event-count" style="font-size:.8rem;color:var(--muted);font-family:var(--font-m)"></span></h2>
-      <div style="margin-left:auto">
-        <button class="btn btn-sm" style="background:rgba(46,204,113,.15);color:var(--green);border:1px solid rgba(46,204,113,.3)" onclick="exportCSV()">
-          <i class="fas fa-file-csv"></i> Esporta CSV
-        </button>
-      </div>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th style="width:32px"></th>
-          <th onclick="sortEvents('type')">Tipo Evento <i class="fas fa-sort" style="font-size:.6rem"></i></th>
-          <th onclick="sortEvents('start')">Inizio <i class="fas fa-sort" style="font-size:.6rem"></i></th>
-          <th>Fine</th>
-          <th onclick="sortEvents('dur')">Durata <i class="fas fa-sort" style="font-size:.6rem"></i></th>
-          <th>Articolo</th>
-          <th>Ordine</th>
-          <th>Stato</th>
-        </tr></thead>
-        <tbody id="events-tbody"></tbody>
-      </table>
-    </div>
-    <div class="pagination" id="pagination"></div>
-  </div>
-</div>
+    <!-- TOASTS -->
+    <div class="toast-container" id="toasts"></div>
 
-</main>
-</div>
+    <script>
+      // ═══════════════════════════════════════════
+      // MOCK DATA
+      // ═══════════════════════════════════════════
+      const now = () => new Date().toLocaleTimeString("it-IT");
 
-<!-- MODAL ORDINE -->
-<div class="modal-overlay" id="modal">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h3>Dettagli Ordine: <span id="modal-num" style="color:var(--orange)"></span></h3>
-      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="modal-body">
-      <div class="detail-list" id="modal-body"></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" id="modal-send-btn"><i class="fas fa-arrow-right-circle"></i> Invia a Impianto</button>
-      <button class="btn" style="background:var(--panel2);color:var(--muted);border:1px solid var(--border)" onclick="closeModal()">Chiudi</button>
-    </div>
-  </div>
-</div>
+      const ricettaData = [
+        { nome: "Profumo", valore: "Lavanda Extra", lastUpdate: "" },
+        { nome: "Stampo", valore: "30g Ovale", lastUpdate: "" },
+        { nome: "Velocita Linea", valore: "120 pz/min", lastUpdate: "" },
+        { nome: "Temperatura Massa", valore: "42.3 °C", lastUpdate: "" },
+        { nome: "Lotto", valore: "L2025-0841", lastUpdate: "" },
+        { nome: "Ordine Attivo", valore: "ORD-2025-0312", lastUpdate: "" },
+        { nome: "Qta da Produrre", valore: "18.000 pz", lastUpdate: "" },
+        { nome: "Qta Prodotta", valore: "11.240 pz", lastUpdate: "" },
+      ];
 
-<!-- TOASTS -->
-<div class="toast-container" id="toasts"></div>
+      const kpiData = [
+        { label: "Pezzi Stampati", value: "11.240", color: "green" },
+        { label: "Pezzi Tagliati", value: "11.198", color: "green" },
+        { label: "Scarti", value: "42", color: "yellow" },
+        { label: "OEE %", value: "87.4%", color: "blue" },
+        { label: "Cadenza Attuale", value: "118 pz/min", color: "orange" },
+        { label: "Tempo Produzione", value: "1h 34m", color: "blue" },
+        { label: "Fermi Totali", value: "12 min", color: "yellow" },
+        { label: "Efficienza Turno", value: "91.2%", color: "green" },
+      ];
 
-<script>
-// ═══════════════════════════════════════════
-// MOCK DATA
-// ═══════════════════════════════════════════
-const now = () => new Date().toLocaleTimeString('it-IT');
+      let macchineData = [
+        { nome: "Saponificatrice", status: "1", emergenza: "1" },
+        { nome: "Stampatrice", status: "1", emergenza: "1" },
+        { nome: "Taglierina", status: "2", emergenza: "0" },
+        { nome: "Confezionatrice", status: "1", emergenza: "1" },
+        { nome: "Nastro 1", status: "1", emergenza: "1" },
+        { nome: "Nastro 2", status: "3", emergenza: "1" },
+        { nome: "Robot Palletizer", status: "1", emergenza: "1" },
+        { nome: "Compressore", status: "1", emergenza: "1" },
+      ];
 
-const ricettaData = [
-  {nome:'Profumo',valore:'Lavanda Extra',lastUpdate:''},
-  {nome:'Stampo',valore:'30g Ovale',lastUpdate:''},
-  {nome:'Velocita Linea',valore:'120 pz/min',lastUpdate:''},
-  {nome:'Temperatura Massa',valore:'42.3 °C',lastUpdate:''},
-  {nome:'Lotto',valore:'L2025-0841',lastUpdate:''},
-  {nome:'Ordine Attivo',valore:'ORD-2025-0312',lastUpdate:''},
-  {nome:'Qta da Produrre',valore:'18.000 pz',lastUpdate:''},
-  {nome:'Qta Prodotta',valore:'11.240 pz',lastUpdate:''},
-];
+      const consumiData = [
+        { nome: "Potenza Attiva kW", valore: "48.32", lastUpdate: "" },
+        { nome: "Energia Oggi kWh", valore: "312.40", lastUpdate: "" },
+        { nome: "Temperatura Reparto °C", valore: "23.5", lastUpdate: "" },
+        { nome: "Umidita % RH", valore: "58.2", lastUpdate: "" },
+        { nome: "Pressione Aria bar", valore: "6.85", lastUpdate: "" },
+        { nome: "Acqua m³/h", valore: "0.42", lastUpdate: "" },
+        { nome: "Gas Nm³/h", valore: "2.18", lastUpdate: "" },
+        { nome: "Tensione V", valore: "397.4", lastUpdate: "" },
+      ];
 
-const kpiData = [
-  {label:'Pezzi Stampati',value:'11.240',color:'green'},
-  {label:'Pezzi Tagliati',value:'11.198',color:'green'},
-  {label:'Scarti',value:'42',color:'yellow'},
-  {label:'OEE %',value:'87.4%',color:'blue'},
-  {label:'Cadenza Attuale',value:'118 pz/min',color:'orange'},
-  {label:'Tempo Produzione',value:'1h 34m',color:'blue'},
-  {label:'Fermi Totali',value:'12 min',color:'yellow'},
-  {label:'Efficienza Turno',value:'91.2%',color:'green'},
-];
+      const fermiData = [
+        { nome: "Guasto Stampatrice", valore: "0" },
+        { nome: "Mancanza Materie Prime", valore: "0" },
+        { nome: "Fermo Taglierina", valore: "1" },
+        { nome: "Emergenza Attiva", valore: "0" },
+        { nome: "Fermo per Pulizia", valore: "0" },
+        { nome: "Fermo Mancanza Materiali", valore: "0" },
+        { nome: "Manutenzione Programmata", valore: "0" },
+        { nome: "Fermo Altro", valore: "0" },
+      ];
 
-let macchineData = [
-  {nome:'Saponificatrice',status:'1',emergenza:'1'},
-  {nome:'Stampatrice',status:'1',emergenza:'1'},
-  {nome:'Taglierina',status:'2',emergenza:'0'},
-  {nome:'Confezionatrice',status:'1',emergenza:'1'},
-  {nome:'Nastro 1',status:'1',emergenza:'1'},
-  {nome:'Nastro 2',status:'3',emergenza:'1'},
-  {nome:'Robot Palletizer',status:'1',emergenza:'1'},
-  {nome:'Compressore',status:'1',emergenza:'1'},
-];
+      const ordiniData = [
+        {
+          docume: "ORD-2025-0312",
+          cIdArticolo: "SAP-LAV",
+          cIdVarArt: "30G",
+          cIdLtt: "L2025-0841",
+          nQtaUsrRDocp: "18000",
+          cIdUm: "PZ",
+          cDesRDocp: "Sapone Lavanda Extra 30g - Ovale Premium",
+          cIdTpArticolo: "FIN",
+          nIdRDocp: "001",
+        },
+        {
+          docume: "ORD-2025-0311",
+          cIdArticolo: "SAP-ROS",
+          cIdVarArt: "50G",
+          cIdLtt: "L2025-0840",
+          nQtaUsrRDocp: "12000",
+          cIdUm: "PZ",
+          cDesRDocp: "Sapone Rosa Selvatica 50g - Tondo",
+          cIdTpArticolo: "FIN",
+          nIdRDocp: "002",
+        },
+        {
+          docume: "ORD-2025-0310",
+          cIdArticolo: "SAP-MEN",
+          cIdVarArt: "25G",
+          cIdLtt: "L2025-0839",
+          nQtaUsrRDocp: "24000",
+          cIdUm: "PZ",
+          cDesRDocp: "Sapone Menta Fresca 25g - Rettangolare",
+          cIdTpArticolo: "FIN",
+          nIdRDocp: "003",
+        },
+        {
+          docume: "ORD-2025-0309",
+          cIdArticolo: "SAP-MAN",
+          cIdVarArt: "100G",
+          cIdLtt: "L2025-0838",
+          nQtaUsrRDocp: "8000",
+          cIdUm: "PZ",
+          cDesRDocp: "Sapone Mandorla Dolce 100g - Ovale Luxury",
+          cIdTpArticolo: "FIN",
+          nIdRDocp: "004",
+        },
+      ];
 
-const consumiData = [
-  {nome:'Potenza Attiva kW',valore:'48.32',lastUpdate:''},
-  {nome:'Energia Oggi kWh',valore:'312.40',lastUpdate:''},
-  {nome:'Temperatura Reparto °C',valore:'23.5',lastUpdate:''},
-  {nome:'Umidita % RH',valore:'58.2',lastUpdate:''},
-  {nome:'Pressione Aria bar',valore:'6.85',lastUpdate:''},
-  {nome:'Acqua m³/h',valore:'0.42',lastUpdate:''},
-  {nome:'Gas Nm³/h',valore:'2.18',lastUpdate:''},
-  {nome:'Tensione V',valore:'397.4',lastUpdate:''},
-];
+      // EVENTS
+      function rndDate(daysAgo, h, m) {
+        const d = new Date();
+        d.setDate(d.getDate() - daysAgo);
+        d.setHours(h, m, 0, 0);
+        return d;
+      }
+      const eventTypes = [
+        "PRODUZIONE",
+        "PAUSA",
+        "AVVIAMENTO",
+        "CAMBIO_STAMPO",
+        "CAMBIO_PROFUMO",
+        "PULIZIA_LINEA",
+        "GUASTO_MACCHINA",
+        "FERMO_MATERIE_PRIME",
+        "FERMO_ALTRO",
+      ];
+      const articles = ["SAP-LAV", "SAP-ROS", "SAP-MEN", "SAP-MAN"];
+      const orders = [
+        "ORD-2025-0312",
+        "ORD-2025-0311",
+        "ORD-2025-0310",
+        "ORD-2025-0309",
+      ];
+      let eventsData = [];
+      let gid = 1;
+      for (let d = 0; d < 30; d++) {
+        const types = eventTypes.slice(0, Math.floor(Math.random() * 3) + 2);
+        let h = 6;
+        types.forEach((t) => {
+          const start = rndDate(d, h, Math.floor(Math.random() * 30));
+          const durMin =
+            t === "PRODUZIONE"
+              ? 60 + Math.floor(Math.random() * 120)
+              : 5 + Math.floor(Math.random() * 30);
+          const end = new Date(start.getTime() + durMin * 60000);
+          h = end.getHours();
+          const art = articles[Math.floor(Math.random() * articles.length)];
+          eventsData.push({
+            groupId: gid++,
+            type: t,
+            start,
+            end,
+            durMin,
+            article: art,
+            order: orders[Math.floor(Math.random() * orders.length)],
+            lotto: `L2025-0${800 + d}`,
+            qtaDaProdurre: Math.floor(Math.random() * 20000 + 5000),
+            pzStampati: Math.floor(Math.random() * 18000 + 4000),
+            pzTagliati: Math.floor(Math.random() * 18000 + 4000),
+            complete: Math.random() > 0.1,
+          });
+        });
+      }
+      eventsData.sort((a, b) => b.start - a.start);
+      let filteredEvents = [...eventsData];
+      let currentPage = 1;
+      const pageSize = 10;
+      let expandedRows = new Set();
+      let sortCol = "start";
+      let sortDir = -1;
+      let sendingOrders = {};
+      let selectedOrder = null;
 
-const fermiData = [
-  {nome:'Guasto Stampatrice',valore:'0'},
-  {nome:'Mancanza Materie Prime',valore:'0'},
-  {nome:'Fermo Taglierina',valore:'1'},
-  {nome:'Emergenza Attiva',valore:'0'},
-  {nome:'Fermo per Pulizia',valore:'0'},
-  {nome:'Fermo Mancanza Materiali',valore:'0'},
-  {nome:'Manutenzione Programmata',valore:'0'},
-  {nome:'Fermo Altro',valore:'0'},
-];
+      // ═══════════════════════════════════════════
+      // HELPERS
+      // ═══════════════════════════════════════════
+      function fmtDur(min) {
+        if (!min) return "N/A";
+        const h = Math.floor(min / 60),
+          m = min % 60;
+        return h > 0 ? `${h}h ${m}m` : `${m}m`;
+      }
+      function fmtDate(d) {
+        return d ? d.toLocaleDateString("it-IT") : "";
+      }
+      function fmtTime(d) {
+        return d
+          ? d.toLocaleTimeString("it-IT", {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            })
+          : "";
+      }
+      function fmtDT(d) {
+        return d ? `${fmtDate(d)} ${fmtTime(d)}` : "";
+      }
+      function typeClass(t) {
+        if (t === "PRODUZIONE") return "prod";
+        if (t.includes("GUASTO") || t.includes("FERMO")) return "stop";
+        if (
+          t.includes("PULIZIA") ||
+          t.includes("CAMBIO") ||
+          t.includes("MANUT")
+        )
+          return "maint";
+        return "other";
+      }
+      function showToast(msg, type = "success") {
+        const el = document.createElement("div");
+        el.className = `toast ${type}`;
+        const ico =
+          type === "success"
+            ? "fas fa-check-circle"
+            : type === "error"
+              ? "fas fa-times-circle"
+              : "fas fa-exclamation-triangle";
+        el.innerHTML = `<i class="${ico}"></i>${msg}`;
+        document.getElementById("toasts").appendChild(el);
+        setTimeout(() => el.remove(), 3500);
+      }
 
-const ordiniData = [
-  {docume:'ORD-2025-0312',cIdArticolo:'SAP-LAV',cIdVarArt:'30G',cIdLtt:'L2025-0841',nQtaUsrRDocp:'18000',cIdUm:'PZ',cDesRDocp:'Sapone Lavanda Extra 30g - Ovale Premium',cIdTpArticolo:'FIN',nIdRDocp:'001'},
-  {docume:'ORD-2025-0311',cIdArticolo:'SAP-ROS',cIdVarArt:'50G',cIdLtt:'L2025-0840',nQtaUsrRDocp:'12000',cIdUm:'PZ',cDesRDocp:'Sapone Rosa Selvatica 50g - Tondo',cIdTpArticolo:'FIN',nIdRDocp:'002'},
-  {docume:'ORD-2025-0310',cIdArticolo:'SAP-MEN',cIdVarArt:'25G',cIdLtt:'L2025-0839',nQtaUsrRDocp:'24000',cIdUm:'PZ',cDesRDocp:'Sapone Menta Fresca 25g - Rettangolare',cIdTpArticolo:'FIN',nIdRDocp:'003'},
-  {docume:'ORD-2025-0309',cIdArticolo:'SAP-MAN',cIdVarArt:'100G',cIdLtt:'L2025-0838',nQtaUsrRDocp:'8000',cIdUm:'PZ',cDesRDocp:'Sapone Mandorla Dolce 100g - Ovale Luxury',cIdTpArticolo:'FIN',nIdRDocp:'004'},
-];
+      // ═══════════════════════════════════════════
+      // NAVIGATION
+      // ═══════════════════════════════════════════
+      function showPage(id, el) {
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("active"));
+        document
+          .querySelectorAll(".nav-item")
+          .forEach((n) => n.classList.remove("active"));
+        document.getElementById("page-" + id).classList.add("active");
+        if (el) el.classList.add("active");
+        closeSidebar();
+        if (id === "report") renderReport();
+      }
 
-// EVENTS
-function rndDate(daysAgo, h, m) {
-  const d = new Date(); d.setDate(d.getDate()-daysAgo);
-  d.setHours(h,m,0,0); return d;
-}
-const eventTypes = ['PRODUZIONE','PAUSA','AVVIAMENTO','CAMBIO_STAMPO','CAMBIO_PROFUMO','PULIZIA_LINEA','GUASTO_MACCHINA','FERMO_MATERIE_PRIME','FERMO_ALTRO'];
-const articles = ['SAP-LAV','SAP-ROS','SAP-MEN','SAP-MAN'];
-const orders = ['ORD-2025-0312','ORD-2025-0311','ORD-2025-0310','ORD-2025-0309'];
-let eventsData = [];
-let gid = 1;
-for(let d=0;d<30;d++){
-  const types = eventTypes.slice(0,Math.floor(Math.random()*3)+2);
-  let h=6;
-  types.forEach(t=>{
-    const start = rndDate(d,h,Math.floor(Math.random()*30));
-    const durMin = t==='PRODUZIONE'?60+Math.floor(Math.random()*120):5+Math.floor(Math.random()*30);
-    const end = new Date(start.getTime()+durMin*60000);
-    h = end.getHours();
-    const art = articles[Math.floor(Math.random()*articles.length)];
-    eventsData.push({
-      groupId:gid++, type:t,
-      start, end, durMin,
-      article:art, order:orders[Math.floor(Math.random()*orders.length)],
-      lotto:`L2025-0${800+d}`,
-      qtaDaProdurre:Math.floor(Math.random()*20000+5000),
-      pzStampati:Math.floor(Math.random()*18000+4000),
-      pzTagliati:Math.floor(Math.random()*18000+4000),
-      complete: Math.random()>0.1
-    });
-  });
-}
-eventsData.sort((a,b)=>b.start-a.start);
-let filteredEvents = [...eventsData];
-let currentPage = 1; const pageSize = 10;
-let expandedRows = new Set();
-let sortCol = 'start'; let sortDir = -1;
-let sendingOrders = {};
-let selectedOrder = null;
+      function toggleSidebar() {
+        const sidebar = document.querySelector(".sidebar");
+        const overlay = document.getElementById("sidebar-overlay");
+        const triggers = document.querySelectorAll(".mobile-menu-btn");
+        const isOpen = sidebar.classList.toggle("open");
+        overlay.classList.toggle("open", isOpen);
+        document.body.classList.toggle("menu-open", isOpen);
+        triggers.forEach((trigger) => {
+          trigger.setAttribute("aria-expanded", String(isOpen));
+          trigger.innerHTML = `<i class="fas ${isOpen ? "fa-times" : "fa-bars"}"></i>`;
+        });
+      }
 
-// ═══════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════
-function fmtDur(min){
-  if(!min) return 'N/A';
-  const h=Math.floor(min/60), m=min%60;
-  return h>0?`${h}h ${m}m`:`${m}m`;
-}
-function fmtDate(d){ return d?d.toLocaleDateString('it-IT'):''; }
-function fmtTime(d){ return d?d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'}):''; }
-function fmtDT(d){ return d?`${fmtDate(d)} ${fmtTime(d)}`:''; }
-function typeClass(t){
-  if(t==='PRODUZIONE') return 'prod';
-  if(t.includes('GUASTO')||t.includes('FERMO')) return 'stop';
-  if(t.includes('PULIZIA')||t.includes('CAMBIO')||t.includes('MANUT')) return 'maint';
-  return 'other';
-}
-function showToast(msg, type='success'){
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  const ico = type==='success'?'fas fa-check-circle':type==='error'?'fas fa-times-circle':'fas fa-exclamation-triangle';
-  el.innerHTML = `<i class="${ico}"></i>${msg}`;
-  document.getElementById('toasts').appendChild(el);
-  setTimeout(()=>el.remove(), 3500);
-}
+      function closeSidebar() {
+        const sidebar = document.querySelector(".sidebar");
+        const overlay = document.getElementById("sidebar-overlay");
+        const triggers = document.querySelectorAll(".mobile-menu-btn");
+        if (!sidebar || !sidebar.classList.contains("open")) return;
+        sidebar.classList.remove("open");
+        overlay.classList.remove("open");
+        document.body.classList.remove("menu-open");
+        triggers.forEach((trigger) => {
+          trigger.setAttribute("aria-expanded", "false");
+          trigger.innerHTML = '<i class="fas fa-bars"></i>';
+        });
+      }
 
-// ═══════════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════════
-function showPage(id, el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  if(el) el.classList.add('active');
-  if(id==='report') renderReport();
-}
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 860) closeSidebar();
+      });
 
-// ═══════════════════════════════════════════
-// CLOCK
-// ═══════════════════════════════════════════
-function updateClock(){
-  const t = new Date().toLocaleTimeString('it-IT');
-  const el = document.getElementById('clock');
-  const el2 = document.getElementById('clock2');
-  if(el) el.textContent = t;
-  if(el2) el2.textContent = t;
-}
-setInterval(updateClock, 1000); updateClock();
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeSidebar();
+      });
 
-// ═══════════════════════════════════════════
-// DASHBOARD RENDER
-// ═══════════════════════════════════════════
-function renderDashboard(){
-  const t = now();
-  // Ricetta
-  document.getElementById('ricetta-grid').innerHTML = ricettaData.map(r=>`
+      // ═══════════════════════════════════════════
+      // CLOCK
+      // ═══════════════════════════════════════════
+      function updateClock() {
+        const t = new Date().toLocaleTimeString("it-IT");
+        const el = document.getElementById("clock");
+        const el2 = document.getElementById("clock2");
+        if (el) el.textContent = t;
+        if (el2) el2.textContent = t;
+      }
+      setInterval(updateClock, 1000);
+      updateClock();
+
+      // ═══════════════════════════════════════════
+      // DASHBOARD RENDER
+      // ═══════════════════════════════════════════
+      function renderDashboard() {
+        const t = now();
+        // Ricetta
+        document.getElementById("ricetta-grid").innerHTML = ricettaData
+          .map(
+            (r) => `
     <div class="kpi-card">
       <div class="kpi-label">${r.nome}</div>
       <div class="kpi-value" style="font-size:1.4rem;color:var(--steel)">${r.valore}</div>
       <div class="kpi-update">Agg: ${t}</div>
-    </div>`).join('');
-  // KPI
-  document.getElementById('kpi-grid').innerHTML = kpiData.map(k=>`
+    </div>`,
+          )
+          .join("");
+        // KPI
+        document.getElementById("kpi-grid").innerHTML = kpiData
+          .map(
+            (k) => `
     <div class="kpi-card ${k.color}">
       <div class="kpi-label">${k.label}</div>
       <div class="kpi-value">${k.value}</div>
       <div class="kpi-update">Agg: ${t}</div>
-    </div>`).join('');
-  // Macchine
-  document.getElementById('macchine-grid').innerHTML = macchineData.map(m=>{
-    const st = m.status==='1'?'running':m.status==='2'?'stopped':'standby';
-    const stTxt = m.status==='1'?'In Marcia':m.status==='2'?'Fermo':'Standby';
-    const emOk = m.emergenza==='1';
-    return `<div class="machine-card">
+    </div>`,
+          )
+          .join("");
+        // Macchine
+        document.getElementById("macchine-grid").innerHTML = macchineData
+          .map((m) => {
+            const st =
+              m.status === "1"
+                ? "running"
+                : m.status === "2"
+                  ? "stopped"
+                  : "standby";
+            const stTxt =
+              m.status === "1"
+                ? "In Marcia"
+                : m.status === "2"
+                  ? "Fermo"
+                  : "Standby";
+            const emOk = m.emergenza === "1";
+            return `<div class="machine-card">
       <div class="machine-name">${m.nome}</div>
       <i class="fas fa-cog machine-icon ${st}"></i>
       <span class="machine-status ${st}">${stTxt}</span>
-      <span class="machine-emerg ${emOk?'ok':'alarm'}">
-        <i class="fas ${emOk?'fa-shield-alt':'fa-exclamation-triangle'}"></i>
-        ${emOk?'Emergenza OK':'EMERGENZA!'}
+      <span class="machine-emerg ${emOk ? "ok" : "alarm"}">
+        <i class="fas ${emOk ? "fa-shield-alt" : "fa-exclamation-triangle"}"></i>
+        ${emOk ? "Emergenza OK" : "EMERGENZA!"}
       </span>
       <div class="machine-update">Agg: ${t}</div>
-    </div>`;}).join('');
-  // Consumi
-  document.getElementById('consumi-grid').innerHTML = consumiData.map(c=>`
+    </div>`;
+          })
+          .join("");
+        // Consumi
+        document.getElementById("consumi-grid").innerHTML = consumiData
+          .map(
+            (c) => `
     <div class="kpi-card yellow">
       <div class="kpi-label">${c.nome}</div>
       <div class="kpi-value" style="font-size:1.6rem">${c.valore}</div>
       <div class="kpi-update">Agg: ${t}</div>
-    </div>`).join('');
-  // Fermi
-  document.getElementById('fermi-grid').innerHTML = fermiData.map(f=>{
-    const active = f.valore==='1';
-    return `<div class="fermo-card">
+    </div>`,
+          )
+          .join("");
+        // Fermi
+        document.getElementById("fermi-grid").innerHTML = fermiData
+          .map((f) => {
+            const active = f.valore === "1";
+            return `<div class="fermo-card">
       <div class="fermo-name">${f.nome}</div>
-      <span class="fermo-stato ${active?'active':'inactive'}">
-        <i class="fas ${active?'fa-exclamation-circle':'fa-check-circle'}"></i>
-        ${active?'ATTIVO':'Non Attivo'}
+      <span class="fermo-stato ${active ? "active" : "inactive"}">
+        <i class="fas ${active ? "fa-exclamation-circle" : "fa-check-circle"}"></i>
+        ${active ? "ATTIVO" : "Non Attivo"}
       </span>
       <div style="font-family:var(--font-m);font-size:.62rem;color:var(--muted)">Agg: ${t}</div>
-    </div>`;}).join('');
-}
+    </div>`;
+          })
+          .join("");
+      }
 
-// ═══════════════════════════════════════════
-// SIMULATE LIVE DATA
-// ═══════════════════════════════════════════
-function simulateLive(){
-  kpiData[0].value = (parseInt(kpiData[0].value.replace(/\D/g,''))+Math.floor(Math.random()*3)).toLocaleString('it-IT');
-  kpiData[1].value = (parseInt(kpiData[1].value.replace(/\D/g,''))+Math.floor(Math.random()*3)).toLocaleString('it-IT');
-  consumiData[0].valore = (48+Math.random()*2-1).toFixed(2);
-  consumiData[2].valore = (23+Math.random()*0.4-0.2).toFixed(1);
-  if(document.getElementById('page-dashboard').classList.contains('active')) renderDashboard();
-}
-setInterval(simulateLive, 3000);
+      // ═══════════════════════════════════════════
+      // SIMULATE LIVE DATA
+      // ═══════════════════════════════════════════
+      function simulateLive() {
+        kpiData[0].value = (
+          parseInt(kpiData[0].value.replace(/\D/g, "")) +
+          Math.floor(Math.random() * 3)
+        ).toLocaleString("it-IT");
+        kpiData[1].value = (
+          parseInt(kpiData[1].value.replace(/\D/g, "")) +
+          Math.floor(Math.random() * 3)
+        ).toLocaleString("it-IT");
+        consumiData[0].valore = (48 + Math.random() * 2 - 1).toFixed(2);
+        consumiData[2].valore = (23 + Math.random() * 0.4 - 0.2).toFixed(1);
+        if (
+          document.getElementById("page-dashboard").classList.contains("active")
+        )
+          renderDashboard();
+      }
+      setInterval(simulateLive, 3000);
 
-// ═══════════════════════════════════════════
-// ORDINI
-// ═══════════════════════════════════════════
-function renderOrdini(){
-  document.getElementById('ordini-grid').innerHTML = ordiniData.map((o,i)=>`
+      // ═══════════════════════════════════════════
+      // ORDINI
+      // ═══════════════════════════════════════════
+      function renderOrdini() {
+        document.getElementById("ordini-grid").innerHTML = ordiniData
+          .map(
+            (o, i) => `
     <div class="order-card">
       <div class="order-header" onclick="openModal(${i})">
         <div class="order-num-label">Numero Ordine</div>
@@ -844,7 +1961,7 @@ function renderOrdini(){
         <div class="order-qty-box">
           <div><i class="fas fa-calculator" style="color:var(--yellow);margin-right:.4rem"></i><small style="color:var(--muted)">Quantità</small></div>
           <div style="display:flex;align-items:baseline;gap:.4rem">
-            <span class="order-qty-num">${parseInt(o.nQtaUsrRDocp).toLocaleString('it-IT')}</span>
+            <span class="order-qty-num">${parseInt(o.nQtaUsrRDocp).toLocaleString("it-IT")}</span>
             <span class="order-qty-um">${o.cIdUm}</span>
           </div>
         </div>
@@ -861,113 +1978,165 @@ function renderOrdini(){
           <button class="btn btn-danger btn-sm" onclick="deleteOrder(${i})"><i class="fas fa-trash"></i> Elimina</button>
         </div>
       </div>
-    </div>`).join('');
-}
+    </div>`,
+          )
+          .join("");
+      }
 
-function sendToScada(i){
-  const btn = document.getElementById(`send-btn-${i}`);
-  const ind = document.getElementById(`sending-${i}`);
-  btn.disabled = true;
-  ind.classList.add('show');
-  setTimeout(()=>{
-    ind.classList.remove('show');
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-check-circle"></i> Inviato!';
-    btn.style.background = 'rgba(46,204,113,.2)';
-    btn.style.color = 'var(--green)';
-    showToast(`Ordine ${ordiniData[i].docume} inviato al PLC via OPC-UA`, 'success');
-    setTimeout(()=>{
-      btn.innerHTML = '<i class="fas fa-arrow-right-circle"></i> Invia a Impianto';
-      btn.style.background=''; btn.style.color='';
-    }, 4000);
-  }, 2200);
-}
+      function sendToScada(i) {
+        const btn = document.getElementById(`send-btn-${i}`);
+        const ind = document.getElementById(`sending-${i}`);
+        btn.disabled = true;
+        ind.classList.add("show");
+        setTimeout(() => {
+          ind.classList.remove("show");
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-check-circle"></i> Inviato!';
+          btn.style.background = "rgba(46,204,113,.2)";
+          btn.style.color = "var(--green)";
+          showToast(
+            `Ordine ${ordiniData[i].docume} inviato al PLC via OPC-UA`,
+            "success",
+          );
+          setTimeout(() => {
+            btn.innerHTML =
+              '<i class="fas fa-arrow-right-circle"></i> Invia a Impianto';
+            btn.style.background = "";
+            btn.style.color = "";
+          }, 4000);
+        }, 2200);
+      }
 
-function deleteOrder(i){
-  if(confirm(`Eliminare l'ordine ${ordiniData[i].docume}?`)){
-    const doc = ordiniData[i].docume;
-    ordiniData.splice(i,1);
-    renderOrdini();
-    showToast(`Ordine ${doc} eliminato`, 'warn');
-  }
-}
+      function deleteOrder(i) {
+        if (confirm(`Eliminare l'ordine ${ordiniData[i].docume}?`)) {
+          const doc = ordiniData[i].docume;
+          ordiniData.splice(i, 1);
+          renderOrdini();
+          showToast(`Ordine ${doc} eliminato`, "warn");
+        }
+      }
 
-function openModal(i){
-  selectedOrder = i;
-  const o = ordiniData[i];
-  document.getElementById('modal-num').textContent = o.docume;
-  document.getElementById('modal-body').innerHTML = `
+      function openModal(i) {
+        selectedOrder = i;
+        const o = ordiniData[i];
+        document.getElementById("modal-num").textContent = o.docume;
+        document.getElementById("modal-body").innerHTML = `
     <div class="detail-list">
-      ${[['Numero Ordine',o.docume],['Articolo',o.cIdArticolo],['Variante',o.cIdVarArt],
-         ['Tipo Articolo',o.cIdTpArticolo],['Lotto',o.cIdLtt],
-         ['Progressivo',o.nIdRDocp],[`Quantità`,`${parseInt(o.nQtaUsrRDocp).toLocaleString('it-IT')} ${o.cIdUm}`]]
-        .map(([k,v])=>`<div class="detail-row"><span class="detail-key">${k}</span><span class="detail-val">${v}</span></div>`).join('')}
+      ${[
+        ["Numero Ordine", o.docume],
+        ["Articolo", o.cIdArticolo],
+        ["Variante", o.cIdVarArt],
+        ["Tipo Articolo", o.cIdTpArticolo],
+        ["Lotto", o.cIdLtt],
+        ["Progressivo", o.nIdRDocp],
+        [
+          `Quantità`,
+          `${parseInt(o.nQtaUsrRDocp).toLocaleString("it-IT")} ${o.cIdUm}`,
+        ],
+      ]
+        .map(
+          ([k, v]) =>
+            `<div class="detail-row"><span class="detail-key">${k}</span><span class="detail-val">${v}</span></div>`,
+        )
+        .join("")}
     </div>
     <div class="detail-desc"><strong>Descrizione:</strong><div style="margin-top:.4rem">${o.cDesRDocp}</div></div>`;
-  document.getElementById('modal-send-btn').onclick = ()=>{ closeModal(); sendToScada(i); };
-  document.getElementById('modal').classList.add('open');
-}
-function closeModal(){ document.getElementById('modal').classList.remove('open'); }
+        document.getElementById("modal-send-btn").onclick = () => {
+          closeModal();
+          sendToScada(i);
+        };
+        document.getElementById("modal").classList.add("open");
+      }
+      function closeModal() {
+        document.getElementById("modal").classList.remove("open");
+      }
 
-// ═══════════════════════════════════════════
-// REPORT
-// ═══════════════════════════════════════════
-function calcStats(){
-  const map = {};
-  filteredEvents.forEach(e=>{
-    if(!map[e.type]) map[e.type]={type:e.type,min:0,count:0};
-    map[e.type].min += e.durMin;
-    map[e.type].count++;
-  });
-  const total = Object.values(map).reduce((s,v)=>s+v.min,0);
-  return Object.values(map).map(s=>({...s, pct: total>0?Math.round(s.min/total*100):0, fmt:fmtDur(s.min)}))
-    .sort((a,b)=>b.min-a.min);
-}
+      // ═══════════════════════════════════════════
+      // REPORT
+      // ═══════════════════════════════════════════
+      function calcStats() {
+        const map = {};
+        filteredEvents.forEach((e) => {
+          if (!map[e.type]) map[e.type] = { type: e.type, min: 0, count: 0 };
+          map[e.type].min += e.durMin;
+          map[e.type].count++;
+        });
+        const total = Object.values(map).reduce((s, v) => s + v.min, 0);
+        return Object.values(map)
+          .map((s) => ({
+            ...s,
+            pct: total > 0 ? Math.round((s.min / total) * 100) : 0,
+            fmt: fmtDur(s.min),
+          }))
+          .sort((a, b) => b.min - a.min);
+      }
 
-function renderReport(){
-  const stats = calcStats();
-  const totalMin = filteredEvents.reduce((s,e)=>s+e.durMin,0);
-  const totalOcc = filteredEvents.length;
-  document.getElementById('stat-cards').innerHTML = `
+      function renderReport() {
+        const stats = calcStats();
+        const totalMin = filteredEvents.reduce((s, e) => s + e.durMin, 0);
+        const totalOcc = filteredEvents.length;
+        document.getElementById("stat-cards").innerHTML = `
     <div class="stat-card danger"><h6>Tipologie Fermi</h6><div class="stat-num">${stats.length}</div><small>Tipologie diverse</small></div>
     <div class="stat-card warn"><h6>Durata Totale</h6><div class="stat-num">${fmtDur(totalMin)}</div><small>Tempo di fermo totale</small></div>
     <div class="stat-card info"><h6>Occorrenze Totali</h6><div class="stat-num">${totalOcc}</div><small>Numero eventi</small></div>`;
-  document.getElementById('stats-tbody').innerHTML = stats.map((s,i)=>`
+        document.getElementById("stats-tbody").innerHTML = stats
+          .map(
+            (s, i) => `
     <tr>
-      <td style="color:var(--muted)">${i+1}</td>
+      <td style="color:var(--muted)">${i + 1}</td>
       <td><span class="badge-type ${typeClass(s.type)}">${s.type}</span></td>
       <td><strong style="color:var(--white)">${s.fmt}</strong></td>
       <td><span style="font-family:var(--font-m);color:var(--muted)">${s.count}</span></td>
       <td><span style="color:var(--yellow);font-family:var(--font-m)">${s.pct}%</span></td>
       <td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${s.pct}%"></div></div></td>
-    </tr>`).join('');
-  renderEventsTable();
-}
+    </tr>`,
+          )
+          .join("");
+        renderEventsTable();
+      }
 
-function renderEventsTable(){
-  const total = filteredEvents.length;
-  document.getElementById('event-count').textContent = `(${total} eventi)`;
-  const start = (currentPage-1)*pageSize;
-  const page = filteredEvents.slice(start, start+pageSize);
-  document.getElementById('events-tbody').innerHTML = page.map(e=>`
+      function renderEventsTable() {
+        const total = filteredEvents.length;
+        document.getElementById("event-count").textContent =
+          `(${total} eventi)`;
+        const start = (currentPage - 1) * pageSize;
+        const page = filteredEvents.slice(start, start + pageSize);
+        document.getElementById("events-tbody").innerHTML = page
+          .map(
+            (e) => `
     <tr onclick="toggleRow(${e.groupId})">
-      <td><i class="fas ${expandedRows.has(e.groupId)?'fa-chevron-down':'fa-chevron-right'}" style="color:var(--muted);font-size:.7rem"></i></td>
+      <td><i class="fas ${expandedRows.has(e.groupId) ? "fa-chevron-down" : "fa-chevron-right"}" style="color:var(--muted);font-size:.7rem"></i></td>
       <td><span class="badge-type ${typeClass(e.type)}">${e.type}</span></td>
       <td><small style="color:var(--muted)">${fmtDate(e.start)}</small><br><strong style="color:var(--white)">${fmtTime(e.start)}</strong></td>
       <td><small style="color:var(--muted)">${fmtDate(e.end)}</small><br><strong style="color:var(--white)">${fmtTime(e.end)}</strong></td>
       <td><span style="color:var(--yellow);font-family:var(--font-m)">${fmtDur(e.durMin)}</span></td>
       <td><span style="font-family:var(--font-m);font-size:.8rem;color:var(--blue)">${e.article}</span></td>
       <td style="font-size:.8rem">${e.order}</td>
-      <td><span class="badge-stato ${e.complete?'done':'open'}">${e.complete?'Completato':'In corso'}</span></td>
+      <td><span class="badge-stato ${e.complete ? "done" : "open"}">${e.complete ? "Completato" : "In corso"}</span></td>
     </tr>
-    ${expandedRows.has(e.groupId)?`<tr class="expand-row"><td colspan="8">
+    ${
+      expandedRows.has(e.groupId)
+        ? `<tr class="expand-row"><td colspan="8">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
         <div>
           <div style="font-family:var(--font-h);font-size:.9rem;color:var(--white);margin-bottom:.75rem"><i class="fas fa-info-circle" style="color:var(--blue);margin-right:.4rem"></i>Dettagli Produzione</div>
-          ${[['Lotto',e.lotto],['Qta da Produrre',e.qtaDaProdurre.toLocaleString('it-IT')],
-             ['Pz Stampati',`<span style="color:var(--green)">${e.pzStampati.toLocaleString('it-IT')}</span>`],
-             ['Pz Tagliati',`<span style="color:var(--green)">${e.pzTagliati.toLocaleString('it-IT')}</span>`]]
-            .map(([k,v])=>`<div style="display:flex;justify-content:space-between;padding:.35rem .5rem;background:rgba(255,255,255,.03);border-radius:4px;margin-bottom:.25rem;font-size:.82rem"><span style="color:var(--muted)">${k}</span><span style="color:var(--steel)">${v}</span></div>`).join('')}
+          ${[
+            ["Lotto", e.lotto],
+            ["Qta da Produrre", e.qtaDaProdurre.toLocaleString("it-IT")],
+            [
+              "Pz Stampati",
+              `<span style="color:var(--green)">${e.pzStampati.toLocaleString("it-IT")}</span>`,
+            ],
+            [
+              "Pz Tagliati",
+              `<span style="color:var(--green)">${e.pzTagliati.toLocaleString("it-IT")}</span>`,
+            ],
+          ]
+            .map(
+              ([k, v]) =>
+                `<div style="display:flex;justify-content:space-between;padding:.35rem .5rem;background:rgba(255,255,255,.03);border-radius:4px;margin-bottom:.25rem;font-size:.82rem"><span style="color:var(--muted)">${k}</span><span style="color:var(--steel)">${v}</span></div>`,
+            )
+            .join("")}
         </div>
         <div>
           <div style="font-family:var(--font-h);font-size:.9rem;color:var(--white);margin-bottom:.75rem"><i class="fas fa-clock" style="color:var(--orange);margin-right:.4rem"></i>Timeline</div>
@@ -978,71 +2147,112 @@ function renderEventsTable(){
           </div>
         </div>
       </div>
-    </td></tr>`:''}
-  `).join('');
-  // Pagination
-  const totalPages = Math.ceil(total/pageSize);
-  let pages = '';
-  for(let p=1;p<=totalPages;p++) pages+=`<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
-  document.getElementById('pagination').innerHTML = `
-    <div class="pagination-info">Visualizzati ${Math.min((currentPage-1)*pageSize+1,total)}–${Math.min(currentPage*pageSize,total)} di ${total} eventi</div>
+    </td></tr>`
+        : ""
+    }
+  `,
+          )
+          .join("");
+        // Pagination
+        const totalPages = Math.ceil(total / pageSize);
+        let pages = "";
+        for (let p = 1; p <= totalPages; p++)
+          pages += `<button class="page-btn ${p === currentPage ? "active" : ""}" onclick="goPage(${p})">${p}</button>`;
+        document.getElementById("pagination").innerHTML = `
+    <div class="pagination-info">Visualizzati ${Math.min((currentPage - 1) * pageSize + 1, total)}–${Math.min(currentPage * pageSize, total)} di ${total} eventi</div>
     <div class="page-btns">
-      <button class="page-btn" onclick="goPage(1)" ${currentPage===1?'disabled':''}><i class="fas fa-angle-double-left"></i></button>
-      <button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}><i class="fas fa-angle-left"></i></button>
+      <button class="page-btn" onclick="goPage(1)" ${currentPage === 1 ? "disabled" : ""}><i class="fas fa-angle-double-left"></i></button>
+      <button class="page-btn" onclick="goPage(${currentPage - 1})" ${currentPage === 1 ? "disabled" : ""}><i class="fas fa-angle-left"></i></button>
       ${pages}
-      <button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}><i class="fas fa-angle-right"></i></button>
-      <button class="page-btn" onclick="goPage(${totalPages})" ${currentPage===totalPages?'disabled':''}><i class="fas fa-angle-double-right"></i></button>
+      <button class="page-btn" onclick="goPage(${currentPage + 1})" ${currentPage === totalPages ? "disabled" : ""}><i class="fas fa-angle-right"></i></button>
+      <button class="page-btn" onclick="goPage(${totalPages})" ${currentPage === totalPages ? "disabled" : ""}><i class="fas fa-angle-double-right"></i></button>
     </div>`;
-}
+      }
 
-function toggleRow(id){
-  if(expandedRows.has(id)) expandedRows.delete(id); else expandedRows.add(id);
-  renderEventsTable();
-}
-function goPage(p){ currentPage=p; renderEventsTable(); }
-function applyFilters(){
-  const type=document.getElementById('f-type').value;
-  const art=document.getElementById('f-art').value.toLowerCase();
-  const start=document.getElementById('f-start').value;
-  const end=document.getElementById('f-end').value;
-  filteredEvents = eventsData.filter(e=>{
-    if(type && e.type!==type) return false;
-    if(art && !e.article.toLowerCase().includes(art)) return false;
-    if(start && e.start < new Date(start)) return false;
-    if(end && e.start > new Date(end+'T23:59:59')) return false;
-    return true;
-  });
-  currentPage=1; renderReport();
-}
-function resetFilters(){
-  ['f-type','f-art','f-start','f-end'].forEach(id=>document.getElementById(id).value='');
-  filteredEvents=[...eventsData]; currentPage=1; renderReport();
-}
-function sortEvents(col){
-  if(sortCol===col) sortDir*=-1; else { sortCol=col; sortDir=-1; }
-  filteredEvents.sort((a,b)=>{
-    if(col==='type') return sortDir*(a.type>b.type?1:-1);
-    if(col==='start') return sortDir*(a.start-b.start);
-    if(col==='dur') return sortDir*(a.durMin-b.durMin);
-    return 0;
-  });
-  renderEventsTable();
-}
-function exportCSV(){
-  const rows = [['Tipo','Inizio','Fine','Durata min','Articolo','Ordine','Lotto','Stato']];
-  filteredEvents.forEach(e=>rows.push([e.type,fmtDT(e.start),fmtDT(e.end),e.durMin,e.article,e.order,e.lotto,e.complete?'Completato':'In corso']));
-  const csv = rows.map(r=>r.join(';')).join('\n');
-  const a=document.createElement('a');
-  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
-  a.download='report_eventi.csv'; a.click();
-  showToast('CSV esportato con successo', 'success');
-}
+      function toggleRow(id) {
+        if (expandedRows.has(id)) expandedRows.delete(id);
+        else expandedRows.add(id);
+        renderEventsTable();
+      }
+      function goPage(p) {
+        currentPage = p;
+        renderEventsTable();
+      }
+      function applyFilters() {
+        const type = document.getElementById("f-type").value;
+        const art = document.getElementById("f-art").value.toLowerCase();
+        const start = document.getElementById("f-start").value;
+        const end = document.getElementById("f-end").value;
+        filteredEvents = eventsData.filter((e) => {
+          if (type && e.type !== type) return false;
+          if (art && !e.article.toLowerCase().includes(art)) return false;
+          if (start && e.start < new Date(start)) return false;
+          if (end && e.start > new Date(end + "T23:59:59")) return false;
+          return true;
+        });
+        currentPage = 1;
+        renderReport();
+      }
+      function resetFilters() {
+        ["f-type", "f-art", "f-start", "f-end"].forEach(
+          (id) => (document.getElementById(id).value = ""),
+        );
+        filteredEvents = [...eventsData];
+        currentPage = 1;
+        renderReport();
+      }
+      function sortEvents(col) {
+        if (sortCol === col) sortDir *= -1;
+        else {
+          sortCol = col;
+          sortDir = -1;
+        }
+        filteredEvents.sort((a, b) => {
+          if (col === "type") return sortDir * (a.type > b.type ? 1 : -1);
+          if (col === "start") return sortDir * (a.start - b.start);
+          if (col === "dur") return sortDir * (a.durMin - b.durMin);
+          return 0;
+        });
+        renderEventsTable();
+      }
+      function exportCSV() {
+        const rows = [
+          [
+            "Tipo",
+            "Inizio",
+            "Fine",
+            "Durata min",
+            "Articolo",
+            "Ordine",
+            "Lotto",
+            "Stato",
+          ],
+        ];
+        filteredEvents.forEach((e) =>
+          rows.push([
+            e.type,
+            fmtDT(e.start),
+            fmtDT(e.end),
+            e.durMin,
+            e.article,
+            e.order,
+            e.lotto,
+            e.complete ? "Completato" : "In corso",
+          ]),
+        );
+        const csv = rows.map((r) => r.join(";")).join("\n");
+        const a = document.createElement("a");
+        a.href = "data:text/csv;charset=utf-8,\uFEFF" + encodeURIComponent(csv);
+        a.download = "report_eventi.csv";
+        a.click();
+        showToast("CSV esportato con successo", "success");
+      }
 
-// ═══════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════
-renderDashboard();
-renderOrdini();
-</script>
-</body>
+      // ═══════════════════════════════════════════
+      // INIT
+      // ═══════════════════════════════════════════
+      renderDashboard();
+      renderOrdini();
+    </script>
+  </body>
 </html>
